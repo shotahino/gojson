@@ -252,7 +252,6 @@ func Generate(input io.Reader, parser Parser, structName, pkgName string, tags [
 	if err != nil {
 		err = fmt.Errorf("error formatting: %s, was formatting\n%s", err, src)
 	}
-
 	return formatted, err
 }
 
