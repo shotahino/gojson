@@ -491,9 +491,9 @@ func typeForValue(value interface{}, structName string, tags []string, subStruct
 		return "interface{}"
 	}
 	v := reflect.TypeOf(value).Name()
-	if v == "float64" {
-		v = disambiguateFloatInt(value)
-	}
+	// if v == "float64" {
+	// 	v = disambiguateFloatInt(value)
+	// }
 	return v
 }
 
@@ -528,12 +528,14 @@ func mergeElements(i interface{}) interface{} {
 		return i
 	case []interface{}:
 		l := len(i)
+
 		if l == 0 {
 			return i
 		}
 		for j := 1; j < l; j++ {
 			i[0] = mergeObjects(i[0], i[j])
 		}
+
 		return i[0:1]
 	}
 }
@@ -548,6 +550,17 @@ func mergeObjects(o1, o2 interface{}) interface{} {
 	}
 
 	if reflect.TypeOf(o1) != reflect.TypeOf(o2) {
+		if reflect.TypeOf(o1).Name() == "float64" {
+			if reflect.TypeOf(o2).Name() == "int" {
+				return o1
+			}
+		}
+
+		if reflect.TypeOf(o2).Name() == "float64" {
+			if reflect.TypeOf(o1).Name() == "int" {
+				return o2
+			}
+		}
 		return nil
 	}
 
