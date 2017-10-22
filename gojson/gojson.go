@@ -51,7 +51,7 @@ import (
 	"os"
 	"strings"
 
-	. "github.com/ChimeraCoder/gojson"
+	gojson "github.com/shotahino/gojson"
 )
 
 var (
@@ -98,15 +98,15 @@ func main() {
 		input = f
 	}
 
-	var parser Parser
+	var parser gojson.Parser
 	switch *format {
 	case "json":
-		parser = ParseJson
+		parser = gojson.ParseJson
 	case "yaml":
-		parser = ParseYaml
+		parser = gojson.ParseYaml
 	}
 
-	if output, err := Generate(input, parser, *name, *pkg, tagList, *subStruct); err != nil {
+	if output, err := gojson.Generate(input, parser, *name, *pkg, tagList, *subStruct); err != nil {
 		fmt.Fprintln(os.Stderr, "error parsing", err)
 		os.Exit(1)
 	} else {
